@@ -13,42 +13,44 @@ sig TaxiDriver extends RegisteredUser{
 	taxi: Taxi
 }
 sig Technician extends RegisteredUser{
-    id: Integer
-}
-sig Taxi{
-	number: Integer,
-	driver: TaxiDriver,
-	licensePlate:Strings,
-	model:Strings,
-	taxiCod:Integer,
-	taxiState:Integer,
-	position:one Coordinates	
+	id: Integer
 }
 sig Request{
 	startingPoint:Address,
 	endPoint:Address,
 	stimatedTime:Integer,
-	waitingTime:Integer,
-	rel:GeneralUser->lone Taxi
+	waitingTime:Integer
 }
 sig Reservation extends Request{
 	meetingTime:Integer,
 	timeOfTheRequest:Integer
 }
+
+sig Taxi{
+	driver: TaxiDriver,
+	licensePlate:Strings,
+	model:Strings,
+	taxiCod:Integer,
+	taxiState:Integer,
+	queue:TaxiQueue
+}
 sig TaxiQueue{
-	queue:Taxi->lone CityZone
+	city:CityZone,
+	taxis:some Taxi
 }
 sig CityZone{
-   name: Strings,
-	rangeOfCoordinates:some Coordinates
+	name: Strings,
+	rangeOfCoordinates: Coordinates,
+	queueT:TaxiQueue
 }
+
 sig Coordinates{
 	latitude:Integer,
 	longitude:Integer
 }
 sig Address{
 	address: Strings,
-    coordinates: Coordinates
+	coordinates: Coordinates
 }
 sig Feature{
 	AllowedTechnicians:some Technician,
@@ -56,12 +58,21 @@ sig Feature{
 	Version:Strings
 }
 
-
-pred show{
-	#Taxi=2
-	#GeneralUser=2
-	#Request=2
-	#CityZone=1
+fact sameTaxiSameDriver{
+	driver=~taxi
 }
 
-run show for 2
+fact TaxiQueueZone{
+	city=~queueT
+}
+
+fact noStartEqualEnd{
+	no r:Request| r.startingPoint=r.endPoint
+}
+
+pred show{
+	#Taxi=3
+	#TaxiQueue=3
+}
+
+run show
