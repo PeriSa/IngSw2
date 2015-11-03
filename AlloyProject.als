@@ -21,26 +21,22 @@ sig Taxi{
 	licensePlate:Strings,
 	model:Strings,
 	taxiCod:Integer,
-	taxiState:Integer	
+	taxiState:Integer,
+	position:one Coordinates	
 }
 sig Request{
 	startingPoint:Address,
 	endPoint:Address,
 	stimatedTime:Integer,
-	waitingTime:Integer
+	waitingTime:Integer,
+	rel:GeneralUser->lone Taxi
 }
 sig Reservation extends Request{
 	meetingTime:Integer,
 	timeOfTheRequest:Integer
 }
-sig Ride{
-	realTime:Integer,
-}
-sig GPS{
-	currentCoordinates:Coordinates
-}
 sig TaxiQueue{
-	queue:some Taxi
+	queue:Taxi->lone CityZone
 }
 sig CityZone{
    name: Strings,
@@ -62,10 +58,10 @@ sig Feature{
 
 
 pred show{
-	#Taxi=1
-	#GeneralUser=1
-	#Ride=1
-	#Request=1
+	#Taxi=2
+	#GeneralUser=2
+	#Request=2
+	#CityZone=1
 }
 
 run show for 2
