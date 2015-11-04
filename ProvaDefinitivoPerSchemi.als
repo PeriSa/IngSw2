@@ -1,31 +1,21 @@
-sig Integer{}
-sig Strings{}
+
 abstract sig GeneralUser{
-	name: Strings,
-	surname: Strings,
-	username: Strings,
-	password: Strings
+
 }
 sig RegisteredUser {
 	history:RideHistory
 
 }
 sig TaxiDriver {
-	licenseNumber: Integer,
+
 	taxi: Taxi
 }
 sig Technician{
-	id: Integer,
-	name: Strings,
-	surname: Strings,
-	username: Strings,
-	password: Strings
+
 }
 sig Request{
 	startingPoint:Address,
 	endPoint:Address,
-	stimatedTime:Int,
-	waitingTime:Int,
 	zone:CityZone,
 }
 sig RideHistory{
@@ -34,22 +24,15 @@ sig RideHistory{
 	user: RegisteredUser
 }
 sig Ride{
-	realTime:Int,
 	requ:lone Request,
 	taxi:Taxi,
 	history:RideHistory
 }
 sig Reservation extends Request{
-	meetingTime:Int,
-	timeOfTheRequest:Int
 }
 
 sig Taxi{
 	driver: TaxiDriver,
-	licensePlate:Strings,
-	model:Strings,
-	taxiCod:Integer,
-	taxiState:Int,
 }
 sig TaxiQueue{
 	city:CityZone,
@@ -60,23 +43,19 @@ sig GPS{
 	coord:Coordinates
 }
 sig CityZone{
-	name: Strings,
 	rangeOfCoordinates: Coordinates,
 
 }
 
 sig Coordinates{
-	latitude:Integer,
-	longitude:Integer
+
 }
 sig Address{
-	address: Strings,
 	coordinates: Coordinates
 }
 sig Feature{
 	AllowedTechnicians:some Technician,
-	Name:Strings,
-	Version:Strings
+
 }
 
 
@@ -102,18 +81,7 @@ fact OneQueueOneZone{
 fact Technician{
 	some t1:Technician, f1:Feature | (t1 in f1.AllowedTechnicians) 
 }
-fact Time{
-	all r1:Request| (r1.stimatedTime>0) and (r1.waitingTime>0)
-}
-fact Time2{
-	all r1:Ride| (r1.realTime>0)
-}
-fact TaxiState{
-	all t1:Taxi| (t1.taxiState=0) or (t1.taxiState=1)
-}
-fact ReservationTime{
-	all r1:Reservation | (r1.meetingTime-r1.timeOfTheRequest)>120
-}
+
 fact OneGPSForTaxi{
 	no disj g1,g2:GPS| (g1.taxi=g2.taxi)
 }
@@ -228,6 +196,5 @@ pred TechniciansDenied(t1:Technician,f1,f2:Feature){
 	t1 not in f1.AllowedTechnicians implies f2.AllowedTechnicians=f1.AllowedTechnicians-t1
 }
 //run TechniciansDenied for 5
-
 
 

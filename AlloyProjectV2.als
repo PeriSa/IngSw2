@@ -149,10 +149,11 @@ fact number{
 
 
  pred show{
-	#CityZone=1
-	#Taxi=4
+	#CityZone=3
+	#Taxi=5
 	#RideHistory=3
 	#Ride>1
+	#TaxiQueue=3
 }
 
 
