@@ -12,8 +12,12 @@ sig TaxiDriver extends RegisteredUser{
 	licenseNumber: Integer,
 	taxi: Taxi
 }
-sig Technician extends RegisteredUser{
-	id: Integer
+sig Technician{
+	id: Integer,
+	name: Strings,
+	surname: Strings,
+	username: Strings,
+	password: Strings
 }
 sig Request{
 	startingPoint:Address,
@@ -32,11 +36,11 @@ sig Taxi{
 	model:Strings,
 	taxiCod:Integer,
 	taxiState:Integer,
-	queue:TaxiQueue
+	queue:one TaxiQueue
 }
 sig TaxiQueue{
 	city:CityZone,
-	taxis:some Taxi
+	taxis:set Taxi
 }
 sig CityZone{
 	name: Strings,
@@ -71,7 +75,7 @@ fact noStartEqualEnd{
 }
 
 pred show{
-	#Taxi=3
+	#Taxi=4
 	#TaxiQueue=3
 }
 
