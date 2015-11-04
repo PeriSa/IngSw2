@@ -141,6 +141,9 @@ fact oneCoordinateOneZone{
 fact OneUserOneHistory{
 	all u1,u2:RegisteredUser |all h1:RideHistory |  ((h1 = u1.history)and (h1 = u2.history))implies(u1=u2)
 }
+fact taxiMustHaveGPS{
+	all t:Taxi|all g1,g2:GPS| ((t = g1.taxi)and (t = g2.taxi))implies(g1=g2)
+}
 
 
 
@@ -155,7 +158,7 @@ pred show{
 }
 
 
-run show  for 5
+//run show  for 5
 
 
 
@@ -180,6 +183,11 @@ assert noCoordinatesInMoreZone{
 	all z1,z2:CityZone |all c1:Coordinates |  ((c1 = z1.rangeOfCoordinates)and (c1 in z2.rangeOfCoordinates))implies(z1=z2)
 }
 //check noCoordinatesInMoreZone for 5
+
+assert noUserMoreHistory{
+	all u1,u2:RegisteredUser |all h1:RideHistory |  ((h1 = u1.history)and (h1 = u2.history))implies(u1=u2)
+}
+check noUserMoreHistory for 5
 
 
 
